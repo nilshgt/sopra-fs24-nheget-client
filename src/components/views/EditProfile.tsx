@@ -17,7 +17,7 @@ const EditProfile = () => {
       const id = localStorage.getItem("id"); // Or however you store this information
       await api.put(`/user/${id}`, requestBody, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
       navigate(`/user/${id}`); // Assuming you have a route for the profile view
@@ -41,18 +41,12 @@ const EditProfile = () => {
             onChange={(b: string) => setBirthday(b)}
             type="date"
           />
-          <Button
-              width="100%"
-              onClick={() => doSave()}
-            >
-              Save
-            </Button>
-            <Button
-              width="100%"
-              onClick={() => navigate("/game")}
-            >
-              Back
-            </Button>
+          <Button width="100%" onClick={() => doSave()}>
+            Save
+          </Button>
+          <Button width="100%" onClick={() => navigate("/game")}>
+            Back
+          </Button>
         </div>
       </div>
     </BaseContainer>

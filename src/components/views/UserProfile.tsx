@@ -26,7 +26,7 @@ const UserProfile = () => {
   const handleEditClick = () => {
     const loggedInUserId = localStorage.getItem("id");
     if (loggedInUserId === id) { // Ensure IDs match
-      navigate(`/edit-profile`);
+      navigate("/edit-profile");
     }
   };
 
@@ -40,14 +40,12 @@ const UserProfile = () => {
       <p>Creation Date: {user.creationDate}</p>
       <p>Birth Date: {user.birthday || "Not set"}</p>
       {localStorage.getItem("id") === id && <Button width="100%" onClick={handleEditClick}>Edit Profile</Button>}
-      <Button
-              width="100%"
-              onClick={() => navigate("/game")}
-            >
-              Back
+      <Button width="100%" onClick={() => navigate("/game")}>
+        Back
       </Button>
     </div> 
   } 
+
   return (
     <BaseContainer className="game container">
       {content}

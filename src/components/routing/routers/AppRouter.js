@@ -4,10 +4,10 @@ import {GameGuard} from "../routeProtectors/GameGuard";
 import GameRouter from "./GameRouter";
 import {LoginGuard} from "../routeProtectors/LoginGuard";
 import Login from "../../views/Login";
-import Register from '../../views/Register';
+import Register from "../../views/Register";
 import { RegisterGuard } from "../routeProtectors/RegisterGuard";
-import EditProfile from '../../views/EditProfile';
-import UserProfile from '../../views/UserProfile';
+import EditProfile from "../../views/EditProfile";
+import UserProfile from "../../views/UserProfile";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"

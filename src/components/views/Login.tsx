@@ -22,12 +22,12 @@ const Login = () => {
 
   const doLogin = async () => {
     try {
-        const requestBody = JSON.stringify({ username, password });
-        const response = await api.post("/login", requestBody);
-        localStorage.setItem("id", response.data);
-        navigate("/game");
+      const requestBody = JSON.stringify({ username, password });
+      const response = await api.post("/login", requestBody);
+      localStorage.setItem("id", response.data);
+      navigate("/game");
     } catch (error) {
-        alert(`Login failed: \n${handleError(error)}`);
+      alert(`Login failed: \n${handleError(error)}`);
     }
   };
 

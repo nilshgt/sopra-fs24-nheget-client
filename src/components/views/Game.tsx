@@ -10,6 +10,7 @@ import { User } from "types";
 
 const Player = ({ user }: { user: User }) => {
   const navigate = useNavigate();
+  
   return (
     <div className="player container" onClick={() => navigate(`/user/${user.id}`)}>
       <div className="player username">{user.username}</div>
