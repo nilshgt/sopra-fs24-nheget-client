@@ -8,13 +8,16 @@ import PropTypes from "prop-types";
 import "styles/views/Game.scss";
 import { User } from "types";
 
-const Player = ({ user }: { user: User }) => (
-  <div className="player container">
-    <div className="player username">{user.username}</div>
-    <div className="player name">{user.name}</div>
-    <div className="player id">id: {user.id}</div>
-  </div>
-);
+const Player = ({ user }: { user: User }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="player container" onClick={() => navigate(`/user/${user.id}`)}>
+      <div className="player username">{user.username}</div>
+      <div className="player name">{user.name}</div>
+      <div className="player id">id: {user.id}</div>
+    </div>
+  );
+};
 
 Player.propTypes = {
   user: PropTypes.object,
@@ -31,9 +34,19 @@ const Game = () => {
   // more information can be found under https://react.dev/learn/state-a-components-memory and https://react.dev/reference/react/useState 
   const [users, setUsers] = useState<User[]>(null);
 
-  const logout = (): void => {
-    localStorage.removeItem("token");
-    navigate("/login");
+  const logout = async (): Promise<void> => {
+    const userId = localStorage.getItem("id");
+    if (userId) {
+      try {
+        // Ensure the request body is correctly structured
+        await api.post("/logout", userId);
+        localStorage.removeItem("id");
+        navigate("/login");
+      } catch (error) {
+        console.error("Logout failed:", error);
+        alert(`Logout failed. Please try again. ${error}`);
+      }
+    }
   };
 
   // the effect hook can be used to react to change in your component.
@@ -44,7 +57,12 @@ const Game = () => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
     async function fetchData() {
       try {
-        const response = await api.get("/users");
+        const id = localStorage.getItem("id");
+        if (!id) {
+          navigate("/login");
+        }
+
+        const response = await api.get("/user");
 
         // delays continuous execution of an async operation for 1 second.
         // This is just a fake async call, so that the spinner can be displayed
@@ -54,7 +72,6 @@ const Game = () => {
         // Get the returned users and update the state.
         setUsers(response.data);
 
-        // This is just some data for you to see what is available.
         // Feel free to remove it.
         console.log("request to:", response.request.responseURL);
         console.log("status code:", response.status);

@@ -6,7 +6,6 @@ import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import FormField from "components/ui/FormField"; // Assuming FormField is located here
 
 /*
 It is possible to add multiple components inside a single file,
@@ -14,20 +13,48 @@ however be sure not to clutter your files with an endless amount!
 As a rule of thumb, use one file per component and only add small,
 specific components that belong to the main one in the same file.
  */
+const FormField = (props) => {
+  return (
+    <div className="login field">
+      <label className="login label">{props.label}</label>
+      <input
+        className="login input"
+        placeholder="enter here.."
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+      />
+    </div>
+  );
+};
 
-const Login = () => {
+FormField.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+};
+
+const Register = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>(null);
   const [username, setUsername] = useState<string>(null);
 
-  const doLogin = async () => {
+  const doRegister = async () => {
     try {
-        const requestBody = JSON.stringify({ username, password });
-        const response = await api.post("/login", requestBody);
-        localStorage.setItem("id", response.data);
-        navigate("/game");
+      const requestBody = JSON.stringify({ username, password });
+      const response = await api.post("/user", requestBody);
+
+      // Get the returned user and update a new object.
+      const user = new User(response.data);
+
+      // Store the id into the local storage.
+      localStorage.setItem("id", user.id);
+
+      // Register successfully worked --> navigate to the route /game in the GameRouter
+      navigate("/game");
     } catch (error) {
-        alert(`Login failed: \n${handleError(error)}`);
+      alert(
+        `Something went wrong during the registration: \n${handleError(error)}`
+      );
     }
   };
 
@@ -49,15 +76,15 @@ const Login = () => {
             <Button
               disabled={!username || !password}
               width="100%"
-              onClick={() => doLogin()}
+              onClick={() => doRegister()}
             >
-              Login
+              Register
             </Button>
             <Button
               width="100%"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/login")}
             >
-              Register
+              Back
             </Button>
           </div>
         </div>
@@ -69,4 +96,4 @@ const Login = () => {
 /**
  * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
  */
-export default Login;
+export default Register;
